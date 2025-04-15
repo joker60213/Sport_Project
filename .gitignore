@@ -1,0 +1,30 @@
+# Общие файлы
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+target/
+build/
+.gradle/
+.mvn/
+
+# JavaScript/Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+.env
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,15 @@
+@import '@/styles/_variables.scss';
+@import 'antd/dist/reset.css';
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: $bg-color;
+  color: $text-color;
+}
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 24px;
+}

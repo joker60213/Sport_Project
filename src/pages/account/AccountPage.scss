@@ -1,0 +1,23 @@
+@import '@/styles/_variables.scss';
+
+.account {
+  min-height: 100vh;
+  background: $bg-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .account-box {
+    background: white;
+    padding: 40px 32px;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+
+    .account-content {
+      margin: 32px 0;
+    }
+  }
+}

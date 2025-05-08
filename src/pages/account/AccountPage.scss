@@ -1,0 +1,180 @@
+@import '@/styles/_variables.scss';
+
+.account {
+  min-height: 100vh;
+  background: $bg-color;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 0;
+
+  &.account-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .account-box {
+    background: white;
+    padding: 40px 32px;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    min-width: 320px;
+
+    .account-content {
+      margin: 32px 0;
+    }
+  }
+
+  .account-clients-box {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    padding: 32px 28px 32px 28px;
+    min-width: 340px;
+    max-width: 520px;
+    width: 100%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .ant-collapse {
+      min-height: 220px;
+      margin-bottom: 32px;
+      transition: min-height 0.3s;
+      background: transparent;
+      border-radius: $border-radius;
+    }
+    .ant-collapse-item {
+      border-radius: $border-radius;
+      margin-bottom: 8px;
+      border: 1px solid #f0f0f0;
+      overflow: hidden;
+    }
+    .ant-collapse-header {
+      font-weight: 600;
+      font-size: 16px;
+      background: #f7f7f7;
+      border-radius: $border-radius $border-radius 0 0;
+      padding-left: 20px !important;
+    }
+    .ant-collapse-content {
+      background: #fcfcfc;
+      padding: 16px 20px;
+    }
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 15px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .ant-typography {
+      margin-bottom: 0;
+    }
+    .ant-typography strong {
+      color: $primary-color;
+    }
+    .ant-typography + .ant-typography {
+      margin-left: 8px;
+    }
+    .ant-typography:last-child {
+      margin-bottom: 0;
+    }
+    .ant-collapse-content-box {
+      padding: 0;
+    }
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+      border-radius: $border-radius;
+    }
+    .ant-collapse > .ant-collapse-item-active > .ant-collapse-header {
+      background: #e6f7e6;
+    }
+    .ant-collapse > .ant-collapse-item-active {
+      border-color: $primary-color;
+    }
+    .ant-collapse > .ant-collapse-item {
+      transition: box-shadow 0.2s;
+    }
+    .ant-collapse > .ant-collapse-item-active {
+      box-shadow: 0 2px 12px rgba(86,171,47,0.08);
+    }
+    .ant-typography.title {
+      margin-bottom: 12px;
+    }
+    .ant-typography.ant-typography-secondary {
+      color: #888;
+    }
+    .ant-typography.ant-typography-danger {
+      color: #ff4d4f;
+    }
+    .ant-typography.ant-typography-success {
+      color: #52c41a;
+    }
+    .ant-typography.ant-typography-warning {
+      color: #faad14;
+    }
+    .ant-typography.ant-typography-info {
+      color: #1890ff;
+    }
+    .ant-typography.ant-typography-disabled {
+      color: #bfbfbf;
+    }
+    .ant-typography.ant-typography-secondary {
+      color: #888;
+    }
+    .ant-typography.ant-typography-danger {
+      color: #ff4d4f;
+    }
+    .ant-typography.ant-typography-success {
+      color: #52c41a;
+    }
+    .ant-typography.ant-typography-warning {
+      color: #faad14;
+    }
+    .ant-typography.ant-typography-info {
+      color: #1890ff;
+    }
+    .ant-typography.ant-typography-disabled {
+      color: #bfbfbf;
+    }
+    .ant-typography.ant-typography-secondary {
+      color: #888;
+    }
+    .ant-typography.ant-typography-danger {
+      color: #ff4d4f;
+    }
+    .ant-typography.ant-typography-success {
+      color: #52c41a;
+    }
+    .ant-typography.ant-typography-warning {
+      color: #faad14;
+    }
+    .ant-typography.ant-typography-info {
+      color: #1890ff;
+    }
+    .ant-typography.ant-typography-disabled {
+      color: #bfbfbf;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    &.account-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .account-clients-box {
+      margin-top: 32px;
+      max-width: 100%;
+    }
+  }
+}

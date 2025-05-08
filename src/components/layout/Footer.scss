@@ -1,0 +1,14 @@
+@import '@/styles/_variables.scss';
+
+.footer {
+    background-color: $primary-color;
+    color: white;
+    padding: 24px 0;
+    text-align: center;
+  
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+  

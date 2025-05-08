@@ -1,0 +1,195 @@
+@import '@/styles/_variables.scss';
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: $green-gradient;
+    color: white;
+  
+    h1 {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+  
+    p {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+  }
+  
+  .features {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 60px 20px;
+    background: #fff;
+  
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: $yellow-gradient;
+      padding: 24px;
+      border-radius: 16px;
+      font-size: 18px;
+      color: #333;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      max-width: 220px;
+      text-align: center;
+  
+      &:hover {
+        transform: translateY(-4px);
+      }
+  
+      svg {
+        font-size: 28px;
+      }
+    }
+  }
+  
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 60px 20px;
+  
+      h1 {
+        font-size: 32px;
+      }
+  
+      p {
+        font-size: 16px;
+      }
+    }
+  
+    .features {
+      flex-direction: column;
+      align-items: center;
+  
+      .card {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  }
+  
+  .target {
+    padding: 80px 20px;
+    background: #fff;
+    text-align: center;
+  
+    h2 {
+      font-size: 32px;
+      margin-bottom: 40px;
+    }
+  
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+  
+    .card {
+      background: white;
+      padding: 32px 24px;
+      border-radius: $border-radius;
+      box-shadow: $box-shadow;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+      transition: 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-6px);
+      }
+  
+      h3 {
+        margin-top: 16px;
+        font-size: 20px;
+      }
+  
+      p {
+        font-size: 16px;
+        margin-top: 8px;
+        color: $text-color;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .target h2 {
+      font-size: 24px;
+    }
+  
+    .target .cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .target .card {
+      max-width: 100%;
+    }
+  }
+
+  .testimonials {
+    padding: 80px 20px;
+    background: #f9f9f9;
+    text-align: center;
+  
+    h2 {
+      font-size: 32px;
+      margin-bottom: 40px;
+    }
+  
+    .cards {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: $border-radius;
+      box-shadow: $box-shadow;
+      max-width: 300px;
+      text-align: left;
+  
+      p {
+        font-style: italic;
+        margin-bottom: 12px;
+      }
+  
+      span {
+        display: block;
+        font-weight: bold;
+        color: $primary-color;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .testimonials h2 {
+      font-size: 24px;
+    }
+  
+    .testimonials .cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  .trainerGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  

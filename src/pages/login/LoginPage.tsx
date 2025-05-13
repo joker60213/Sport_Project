@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input, Radio, Typography } from 'antd'
 import './LoginPage.scss'
@@ -12,26 +12,7 @@ interface LoginPageProps {
 const LoginPage = ({ setUser }: LoginPageProps) => {
   const [name, setName] = useState('')
   const [role, setRole] = useState<'client' | 'trainer'>('client')
-  const [redirect, setRedirect] = useState(false)
-  const [countdown, setCountdown] = useState(3)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (redirect) {
-      const timer = setTimeout(() => {
-        navigate('/')
-      }, 3000)
-      
-      const interval = setInterval(() => {
-        setCountdown(prev => prev - 1)
-      }, 1000)
-      
-      return () => {
-        clearTimeout(timer)
-        clearInterval(interval)
-      }
-    }
-  }, [redirect, navigate])
 
   const handleLogin = () => {
     if (!name) return
@@ -44,7 +25,7 @@ const LoginPage = ({ setUser }: LoginPageProps) => {
 
     localStorage.setItem('user', JSON.stringify(user))
     setUser(user)
-    setRedirect(true)
+    navigate('/')
   }
 
   return (
@@ -76,12 +57,6 @@ const LoginPage = ({ setUser }: LoginPageProps) => {
         >
           Войти
         </Button>
-        
-        {redirect && (
-          <div style={{ marginTop: 16, textAlign: 'center' }}>
-            Перенаправление на главную страницу через {countdown} сек...
-          </div>
-        )}
       </div>
     </div>
   )

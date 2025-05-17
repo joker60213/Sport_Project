@@ -1,0 +1,37 @@
+@import '@/styles/_variables.scss';
+
+.wrapper {
+  padding: 80px 20px;
+  background: $bg-color;
+
+  .info {
+    margin-bottom: 40px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .form {
+    margin-bottom: 60px;
+
+    input,
+    textarea {
+      margin-bottom: 16px;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .map {
+    .fakeMap {
+      height: 240px;
+      background: #ddd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #666;
+      border-radius: $border-radius;
+    }
+  }
+}

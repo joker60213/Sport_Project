@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button, Input, List, Avatar, Card } from 'antd'
-import { SendOutlined, UserOutlined } from '@ant-design/icons'
+import { SendOutlined, UserOutlined, CloseOutlined, MessageOutlined } from '@ant-design/icons'
 import './ClientChat.scss'
 
 interface Message {
@@ -17,6 +17,7 @@ interface ClientChatProps {
 const ClientChat = ({ clientName }: ClientChatProps) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -34,10 +35,31 @@ const ClientChat = ({ clientName }: ClientChatProps) => {
     setInput('')
   }
 
+  const toggleChat = () => {
+    setIsOpen(!isOpen)
+  }
+
+  if (!isOpen) {
+    return (
+      <Button
+        type="primary"
+        icon={<MessageOutlined />}
+        onClick={toggleChat}
+        className="chat-toggle-button"
+        style={{ position: 'fixed', right: 40, bottom: 24, zIndex: 1000 }}
+      >
+        Чат с клиентом
+      </Button>
+    )
+  }
+
   return (
-    <Card className="client-chat-card" title={`Чат с клиентом: ${clientName}`}
-      style={{ position: 'fixed', right: 24, bottom: 24, width: 340, zIndex: 1000 }}
+    <Card 
+      className="client-chat-card" 
+      title={`Чат с клиентом: ${clientName}`}
+      style={{ position: 'fixed', right: 40, bottom: 24, width: 340, zIndex: 1000 }}
       bodyStyle={{ padding: 12, height: 320, display: 'flex', flexDirection: 'column' }}
+      extra={<Button type="text" icon={<CloseOutlined />} onClick={toggleChat} />}
     >
       <div className="client-chat-messages" style={{ flex: 1, overflowY: 'auto', marginBottom: 8 }}>
         <List

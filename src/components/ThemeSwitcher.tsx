@@ -27,7 +27,7 @@ const ThemeSwitcher = ({ onChange, initialValue = false }: ThemeSwitcherProps) =
   }
 
   return (
-    <div style={{ position: 'fixed', top: 24, right: 24, zIndex: 2000 }}>
+    <div style={{ position: 'fixed', top: 24, right: 40, zIndex: 2000 }}>
       <Switch
         checked={dark}
         onChange={handleChange}

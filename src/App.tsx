@@ -7,6 +7,8 @@ import ContactsPage from './pages/contacts/ContactsPage'
 import LoginPage from './pages/login/LoginPage'
 import AccountPage from './pages/account/AccountPage'
 import ClientDetailsPage from './pages/clientDetails/ClientDetailsPage'
+import ClientAccountPage from './pages/clientAccount/ClientAccountPage'
+import TrainerDetailsPage from './pages/trainers/TrainerDetailsPage'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import { Spin, ConfigProvider, theme } from 'antd'
@@ -88,8 +90,16 @@ const App = () => {
           <Route path="/trainers" element={<TrainersPage />} />
           <Route path="/contacts" element={<ContactsPage />} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
-          <Route path="/account" element={<AccountPage user={user} setUser={setUser} isAuthLoading={isAuthLoading} />} />
+          <Route 
+            path="/account" 
+            element={
+              user?.role === 'trainer' 
+                ? <AccountPage user={user} setUser={setUser} isAuthLoading={isAuthLoading} /> 
+                : <ClientAccountPage user={user} setUser={setUser} isAuthLoading={isAuthLoading} />
+            } 
+          />
           <Route path="/client/:clientId" element={<ClientDetailsPage user={user} />} />
+          <Route path="/trainer/:trainerId" element={<TrainerDetailsPage user={user} />} />
           {/* опционально: редирект на главную, если путь неизвестен */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

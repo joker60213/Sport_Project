@@ -370,7 +370,12 @@ const ClientDetailsPage = ({ user }: ClientDetailsPageProps) => {
     measurementForm.resetFields()
     
     if (measurement) {
-      measurementForm.setFieldsValue(measurement)
+      const formattedMeasurement = {
+        ...measurement,
+        date: dayjs(measurement.date)
+      }
+      
+      measurementForm.setFieldsValue(formattedMeasurement)
     }
     
     setIsMeasurementModalVisible(true)

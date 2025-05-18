@@ -1,0 +1,81 @@
+@import '@/styles/_variables.scss';
+
+.trainer-details-page {
+  padding: 40px 20px;
+  
+  .back-button {
+    margin-bottom: 20px;
+  }
+  
+  .trainer-header-card {
+    margin-bottom: 24px;
+    
+    .trainer-avatar {
+      display: block;
+      margin: 0 auto;
+      
+      @media (min-width: 576px) {
+        margin: 0;
+      }
+    }
+    
+    .trainer-specialty {
+      margin: 12px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .trainer-rating {
+      margin-bottom: 12px;
+    }
+    
+    .trainer-experience {
+      margin-bottom: 16px;
+    }
+  }
+  
+  .trainer-content {
+    .about-card, .services-card, .contact-card {
+      height: 100%;
+    }
+    
+    .about-card {
+      .ant-typography {
+        white-space: pre-line;
+      }
+    }
+    
+    .services-card {
+      .ant-list-item {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+.trainer-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  
+  .ant-typography {
+    margin-bottom: 16px;
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .trainer-details-page {
+    padding: 20px 12px;
+    
+    .trainer-avatar {
+      width: 150px !important;
+      height: 150px !important;
+    }
+  }
+} 

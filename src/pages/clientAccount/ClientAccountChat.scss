@@ -1,0 +1,176 @@
+@import '@/styles/_variables.scss';
+
+.client-account-chat-card {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  border-radius: 12px;
+  
+  .ant-card-head {
+    background-color: var(--color-primary);
+    color: white;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    padding: 0;
+    
+    .ant-card-head-title {
+      color: white;
+      padding: 8px 16px;
+    }
+    
+    .chat-header {
+      display: flex;
+      flex-direction: column;
+      
+      .chat-title-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      
+      .chat-title {
+        color: white;
+        font-size: 16px;
+        
+        .trainer-name {
+          font-weight: 700;
+          font-size: 18px;
+          margin-left: 5px;
+          color: #f0f0f0;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+      }
+      
+      .chat-trainers-tabs {
+        margin-bottom: 6px;
+        
+        .trainers-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          
+          .trainer-tab-button {
+            border-radius: 16px;
+            padding: 0 12px;
+            font-size: 13px;
+            height: 28px;
+            border: 1px solid rgba(255,255,255,0.4);
+            
+            &.ant-btn-primary {
+              background-color: white;
+              color: var(--color-primary);
+              font-weight: 600;
+              border-color: white;
+            }
+            
+            &.ant-btn-default {
+              background-color: transparent;
+              color: white;
+              
+              &:hover {
+                background-color: rgba(255,255,255,0.2);
+                border-color: white;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    .ant-card-extra {
+      padding: 8px 16px 8px 0;
+      
+      .chat-controls {
+        display: flex;
+        
+        .chat-button {
+          color: white;
+          margin-left: 4px;
+          
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 600px) {
+    right: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    bottom: 0 !important;
+    border-radius: 0;
+    
+    .ant-card-head {
+      border-radius: 0;
+    }
+  }
+}
+
+.client-account-chat-messages {
+  background: var(--color-card) !important;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 180px;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  margin-right: 4px;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .ant-list-item {
+    border-bottom: none;
+    padding: 4px 0;
+  }
+  
+  .message-bubble {
+    border-radius: 12px;
+    padding: 8px 12px;
+    max-width: 80%;
+    
+    &.client {
+      background-color: rgba(86, 171, 47, 0.1);
+      border: 1px solid rgba(86, 171, 47, 0.2);
+      margin-left: auto;
+    }
+    
+    &.trainer {
+      background-color: rgba(24, 144, 255, 0.1);
+      border: 1px solid rgba(24, 144, 255, 0.2);
+      margin-right: auto;
+    }
+    
+    .message-time {
+      font-size: 11px;
+      color: #888;
+      text-align: right;
+      margin-top: 4px;
+    }
+  }
+}
+
+.input-container {
+  display: flex;
+  margin-top: 8px;
+  
+  .ant-input {
+    border-radius: 18px 0 0 18px;
+    padding-left: 16px;
+  }
+  
+  .ant-btn {
+    border-radius: 0 18px 18px 0;
+  }
+} 

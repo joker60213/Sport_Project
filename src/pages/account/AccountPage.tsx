@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Typography, Alert, Input, Select, Rate, message, Upload, Collapse } from 'antd'
 import { UploadOutlined, PlusOutlined, DeleteOutlined, FileImageOutlined } from '@ant-design/icons'
-import { Line } from '@ant-design/charts'
 import './AccountPage.scss'
 
 const { Title, Text } = Typography
@@ -601,23 +600,6 @@ const AccountPage = ({ user, setUser, isAuthLoading }: AccountPageProps) => {
           <Title level={4} style={{ marginBottom: 16 }}>Клиенты ({clients.length})</Title>
           <Collapse accordion>
             {clients.map(client => {
-              const chartData = client.trainings
-                .slice()
-                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-                .map(t => ({ date: t.date, progress: t.progress, type: t.type }))
-              const chartConfig = {
-                data: chartData,
-                xField: 'date',
-                yField: 'progress',
-                seriesField: 'type',
-                point: { size: 5, shape: 'diamond' },
-                color: ['#56ab2f'],
-                xAxis: { title: { text: 'Дата' } },
-                yAxis: { title: { text: 'Прогресс' }, min: 0, max: 100 },
-                height: 180,
-                smooth: true,
-                tooltip: { showMarkers: true },
-              }
               return (
                 <Panel header={client.name} key={client.id}>
                   <div style={{ marginBottom: 8 }}>
@@ -625,20 +607,13 @@ const AccountPage = ({ user, setUser, isAuthLoading }: AccountPageProps) => {
                     <Text strong>Рост:</Text> {client.height} см <br />
                     <Text strong>Вес:</Text> {client.weight} кг
                   </div>
-                  <Title level={5} style={{ margin: '12px 0 8px' }}>Тренировки</Title>
-                  <ul style={{ paddingLeft: 16 }}>
-                    {client.trainings
-                      .slice()
-                      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                      .map((t, idx) => (
-                        <li key={idx}>
-                          <b>{t.type}</b> — {new Date(t.date).toLocaleDateString()} (прогресс: {t.progress}%)
-                        </li>
-                      ))}
-                  </ul>
-                  <div style={{ marginTop: 24 }}>
-                    <Title level={5} style={{ marginBottom: 8 }}>Прогресс клиента</Title>
-                    <Line {...chartConfig} />
+                  <div style={{ marginTop: 12 }}>
+                    <Button 
+                      type="primary" 
+                      onClick={() => navigate(`/client/${client.id}`)}
+                    >
+                      Подробнее
+                    </Button>
                   </div>
                 </Panel>
               )

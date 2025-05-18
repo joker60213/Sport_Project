@@ -1,3 +1,20 @@
+
+# web-app
+
+Компонент для проекта Athlo.
+
+## Ветки
+
+- **master** - основная ветка (стабильная версия)
+- **develop** - ветка разработки (текущая разработка)
+
+## Установка и запуск
+
+Инструкции будут добавлены позже.
+
+
+тест комиита с фронта
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

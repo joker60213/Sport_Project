@@ -1,23 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
-import { Button, Input, List, Avatar, Card } from 'antd'
-import { SendOutlined, UserOutlined, CloseOutlined } from '@ant-design/icons'
+import { Button, Input, List, Avatar, Card, Typography } from 'antd'
+import { SendOutlined, UserOutlined, CloseOutlined, MinusOutlined } from '@ant-design/icons'
 import './ClientAccountChat.scss'
+import { Message, ClientAccountChatProps } from '../../types'
 
-interface Message {
-  id: number
-  author: 'trainer' | 'client'
-  text: string
-  time: string
-}
+const { Text } = Typography;
 
-interface ClientAccountChatProps {
-  trainerName: string
-  onClose: () => void
-}
-
-const ClientAccountChat = ({ trainerName, onClose }: ClientAccountChatProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    // Демонстрационные сообщения, в реальном приложении они будут загружаться с сервера
+// Моковая история чатов с тренерами
+const mockChatHistory: Record<number, Message[]> = {
+  1: [
     {
       id: 1,
       author: 'trainer',
@@ -30,49 +21,130 @@ const ClientAccountChat = ({ trainerName, onClose }: ClientAccountChatProps) => 
       text: 'Добрый день! Все отлично, прогресс есть',
       time: '10:35'
     }
-  ]);
+  ],
+  2: [
+    {
+      id: 1,
+      author: 'trainer',
+      text: 'Приветствую! Как продвигается растяжка?',
+      time: '11:15'
+    },
+    {
+      id: 2,
+      author: 'client',
+      text: 'Стараюсь выполнять все упражнения регулярно',
+      time: '11:20'
+    }
+  ]
+};
+
+const ClientAccountChat = ({ 
+  onClose, 
+  onCloseChat, 
+  activeChats, 
+  currentChatIndex, 
+  setCurrentChatIndex
+}: ClientAccountChatProps) => {
+  // Создаем объект для хранения сообщений по id тренера
+  const [chatMessages, setChatMessages] = useState<Record<number, Message[]>>({});
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Инициализируем историю сообщений при первой загрузке
+    setChatMessages(mockChatHistory);
+  }, []);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [chatMessages, currentChatIndex]);
 
   const sendMessage = () => {
-    if (!input.trim()) return
-    setMessages([...messages, {
+    if (!input.trim() || currentChatIndex < 0) return
+    
+    const currentTrainer = activeChats[currentChatIndex];
+    const newMessage: Message = {
       id: Date.now(),
       author: 'client',
       text: input,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }])
-    setInput('')
+    };
+    
+    setChatMessages(prev => {
+      const messages = [...(prev[currentTrainer.id] || []), newMessage];
+      return { ...prev, [currentTrainer.id]: messages };
+    });
+    
+    setInput('');
 
     // Имитация ответа от тренера (в реальном приложении будет API)
     setTimeout(() => {
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1,
-        author: 'trainer',
-        text: 'Отлично! Продолжайте в том же духе. У вас хорошо получается.',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }])
-    }, 2000)
+      setChatMessages(prev => {
+        const messages = [
+          ...(prev[currentTrainer.id] || []), 
+          {
+            id: Date.now() + 1,
+            author: 'trainer' as const,
+            text: 'Отлично! Продолжайте в том же духе. У вас хорошо получается.',
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ];
+        return { ...prev, [currentTrainer.id]: messages };
+      });
+    }, 2000);
+  };
+
+  if (currentChatIndex < 0 || activeChats.length === 0) {
+    return null;
   }
+
+  const currentTrainer = activeChats[currentChatIndex];
+  const currentMessages = chatMessages[currentTrainer.id] || [];
 
   return (
     <Card 
       className="client-account-chat-card" 
-      title={`Чат с тренером: ${trainerName}`}
+      title={
+        <div className="chat-header">
+          <div className="chat-title-row">
+            <Text strong className="chat-title">
+              Чат с тренером: <span className="trainer-name">{activeChats[currentChatIndex]?.name}</span>
+            </Text>
+          </div>
+          <div className="chat-trainers-tabs">
+            {activeChats.length > 1 && (
+              <div className="trainers-list">
+                {activeChats.map((trainer, index) => (
+                  <Button 
+                    key={index}
+                    type={index === currentChatIndex ? "primary" : "default"}
+                    size="small"
+                    onClick={() => setCurrentChatIndex(index)}
+                    className="trainer-tab-button"
+                  >
+                    {trainer.name}
+                  </Button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      }
       style={{ position: 'fixed', right: 40, bottom: 24, width: 340, zIndex: 1000 }}
       bodyStyle={{ padding: 12, height: 320, display: 'flex', flexDirection: 'column' }}
-      extra={<Button type="text" icon={<CloseOutlined />} onClick={onClose} />}
+      extra={
+        <div className="chat-controls">
+          <Button type="text" icon={<MinusOutlined />} onClick={onClose} className="chat-button" />
+          <Button type="text" icon={<CloseOutlined />} onClick={onCloseChat} className="chat-button" />
+        </div>
+      }
     >
       <div className="client-account-chat-messages" style={{ flex: 1, overflowY: 'auto', marginBottom: 8, marginRight: 4 }}>
         <List
-          dataSource={messages}
+          dataSource={currentMessages}
           renderItem={msg => (
             <List.Item style={{ justifyContent: msg.author === 'client' ? 'flex-end' : 'flex-start' }}>
-              {msg.author === 'trainer' && <Avatar icon={<UserOutlined />} style={{ marginRight: 8 }} />}
+              {msg.author === 'trainer' && <Avatar src={activeChats[currentChatIndex]?.img} icon={<UserOutlined />} style={{ marginRight: 8 }} />}
               <div style={{ 
                 background: msg.author === 'client' ? 'rgba(86, 171, 47, 0.1)' : 'rgba(24, 144, 255, 0.1)', 
                 borderRadius: 8, 

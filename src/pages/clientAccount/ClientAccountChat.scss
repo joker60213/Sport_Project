@@ -9,17 +9,85 @@
     color: white;
     border-bottom: none;
     border-radius: 12px 12px 0 0;
+    padding: 0;
     
     .ant-card-head-title {
       color: white;
+      padding: 8px 16px;
+    }
+    
+    .chat-header {
+      display: flex;
+      flex-direction: column;
+      
+      .chat-title-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      
+      .chat-title {
+        color: white;
+        font-size: 16px;
+        
+        .trainer-name {
+          font-weight: 700;
+          font-size: 18px;
+          margin-left: 5px;
+          color: #f0f0f0;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+      }
+      
+      .chat-trainers-tabs {
+        margin-bottom: 6px;
+        
+        .trainers-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          
+          .trainer-tab-button {
+            border-radius: 16px;
+            padding: 0 12px;
+            font-size: 13px;
+            height: 28px;
+            border: 1px solid rgba(255,255,255,0.4);
+            
+            &.ant-btn-primary {
+              background-color: white;
+              color: var(--color-primary);
+              font-weight: 600;
+              border-color: white;
+            }
+            
+            &.ant-btn-default {
+              background-color: transparent;
+              color: white;
+              
+              &:hover {
+                background-color: rgba(255,255,255,0.2);
+                border-color: white;
+              }
+            }
+          }
+        }
+      }
     }
     
     .ant-card-extra {
-      .ant-btn {
-        color: white;
+      padding: 8px 16px 8px 0;
+      
+      .chat-controls {
+        display: flex;
         
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+        .chat-button {
+          color: white;
+          margin-left: 4px;
+          
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
         }
       }
     }

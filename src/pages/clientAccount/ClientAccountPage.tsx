@@ -1,95 +1,26 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
-  Typography, Card, Tabs, Button, Table, Layout, Avatar, Tag, 
-  Collapse, List, Row, Col, Statistic, Progress, Divider, Space, Modal
+  Typography, Card, Tabs, Button, Table, Avatar, Tag, 
+  Collapse, List, Row, Col, Progress, Divider, Space, Modal,
+  Input, Form, Tooltip
 } from 'antd'
 import { 
   UserOutlined, CalendarOutlined, LineChartOutlined, FileTextOutlined, 
   TeamOutlined, MessageOutlined, InfoCircleOutlined, DashboardOutlined,
-  BellOutlined, SettingOutlined, LogoutOutlined, RightOutlined, HistoryOutlined
+  LogoutOutlined, RightOutlined, EditOutlined, SaveOutlined, 
+  CloseOutlined, CommentOutlined, MinusCircleOutlined, PlusOutlined
 } from '@ant-design/icons'
 import './ClientAccountPage.scss'
 import ClientAccountChat from './ClientAccountChat'
+import { 
+  Client, Trainer, ClientAccountPageProps
+} from '../../types'
 
 const { Title, Text, Paragraph } = Typography
 const { TabPane } = Tabs
 const { Panel } = Collapse
-
-// Используем те же интерфейсы, что и в детальной странице клиента
-interface Training {
-  type: string
-  date: string
-  progress: number
-}
-
-interface Exercise {
-  id: string
-  name: string
-  sets: number
-  reps: number
-  weight: number
-  notes?: string
-}
-
-interface WorkoutSession {
-  id: string
-  date: string
-  title: string
-  exercises: Exercise[]
-  notes?: string
-}
-
-interface BodyMeasurement {
-  date: string
-  weight: number
-  chest?: number
-  waist?: number
-  hips?: number
-  thighs?: number
-  arms?: number
-  shoulders?: number
-  neck?: number
-  calves?: number
-}
-
-interface Client {
-  id: number
-  name: string
-  age: number
-  height: number
-  weight: number
-  trainings: Training[]
-  workouts?: WorkoutSession[]
-  bodyMeasurements?: BodyMeasurement[]
-  notes?: string[]
-  goals?: string
-  medicalInfo?: string
-  contactInfo?: string
-  dietInfo?: string
-}
-
-// Новый интерфейс для тренера с точки зрения клиента
-interface Trainer {
-  id: number
-  name: string
-  specialty: string
-  img?: string
-  rating: number
-  experience: string
-  about: string
-  contacts: string
-}
-
-interface ClientAccountPageProps {
-  user: {
-    name: string
-    role: 'client' | 'trainer'
-    id?: number
-  } | null
-  setUser: (user: any) => void
-  isAuthLoading?: boolean
-}
+const { TextArea } = Input
 
 // Моковые данные о тренерах для демонстрации
 const mockTrainers: Trainer[] = [
@@ -201,10 +132,25 @@ const ClientAccountPage = ({ user, setUser, isAuthLoading }: ClientAccountPagePr
   const navigate = useNavigate();
   const [client, setClient] = useState<Client | null>(null);
   const [trainers, setTrainers] = useState<Trainer[]>([]);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [activeTrainer, setActiveTrainer] = useState<Trainer | null>(null);
+  const [activeChats, setActiveChats] = useState<Trainer[]>([]);
+  const [currentChatIndex, setCurrentChatIndex] = useState<number>(-1);
+  const [isChatCollapsed, setIsChatCollapsed] = useState(false);
   const [isTrainerModalOpen, setIsTrainerModalOpen] = useState(false);
   const [selectedTrainer, setSelectedTrainer] = useState<Trainer | null>(null);
+  
+  // Editing states
+  const [isEditingGoals, setIsEditingGoals] = useState(false);
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [isEditingMedical, setIsEditingMedical] = useState(false);
+  const [isEditingDiet, setIsEditingDiet] = useState(false);
+  const [isEditingContact, setIsEditingContact] = useState(false);
+  
+  // Temporary values for editing
+  const [editedGoals, setEditedGoals] = useState('');
+  const [editedNotes, setEditedNotes] = useState<string[]>([]);
+  const [editedMedical, setEditedMedical] = useState('');
+  const [editedDiet, setEditedDiet] = useState('');
+  const [editedContact, setEditedContact] = useState('');
 
   useEffect(() => {
     // В реальном приложении здесь будет загрузка данных с сервера
@@ -217,6 +163,17 @@ const ClientAccountPage = ({ user, setUser, isAuthLoading }: ClientAccountPagePr
     }
   }, [user, isAuthLoading, navigate]);
 
+  useEffect(() => {
+    if (client) {
+      // Initialize editing states
+      setEditedGoals(client.goals || '');
+      setEditedNotes(client.notes || []);
+      setEditedMedical(client.medicalInfo || '');
+      setEditedDiet(client.dietInfo || '');
+      setEditedContact(client.contactInfo || '');
+    }
+  }, [client]);
+
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
@@ -224,18 +181,102 @@ const ClientAccountPage = ({ user, setUser, isAuthLoading }: ClientAccountPagePr
   };
 
   const toggleChat = (trainer: Trainer) => {
-    setActiveTrainer(trainer);
-    setIsChatOpen(true);
+    // Check if chat with this trainer already exists
+    const existingIndex = activeChats.findIndex(t => t.id === trainer.id);
+    
+    if (existingIndex >= 0) {
+      // Chat exists, just switch to it
+      setCurrentChatIndex(existingIndex);
+      setIsChatCollapsed(false);
+    } else {
+      // Add new chat
+      setActiveChats([...activeChats, trainer]);
+      setCurrentChatIndex(activeChats.length);
+      setIsChatCollapsed(false);
+    }
   };
 
-  const closeChat = () => {
-    setIsChatOpen(false);
-    setActiveTrainer(null);
+  const collapseChat = () => {
+    setIsChatCollapsed(true);
+  };
+
+  const expandChat = () => {
+    setIsChatCollapsed(false);
+  };
+
+  const closeChat = (index: number) => {
+    const newChats = [...activeChats];
+    newChats.splice(index, 1);
+    setActiveChats(newChats);
+    
+    // Update current chat index
+    if (index === currentChatIndex) {
+      if (newChats.length > 0) {
+        setCurrentChatIndex(Math.min(index, newChats.length - 1));
+      } else {
+        setCurrentChatIndex(-1);
+      }
+    } else if (index < currentChatIndex) {
+      setCurrentChatIndex(currentChatIndex - 1);
+    }
   };
 
   const showTrainerDetails = (trainer: Trainer) => {
     setSelectedTrainer(trainer);
     setIsTrainerModalOpen(true);
+  };
+
+  // Handle saving edited content
+  const saveGoals = () => {
+    if (client) {
+      setClient({...client, goals: editedGoals});
+      setIsEditingGoals(false);
+    }
+  };
+
+  const saveNotes = () => {
+    if (client) {
+      setClient({...client, notes: editedNotes});
+      setIsEditingNotes(false);
+    }
+  };
+
+  const saveMedical = () => {
+    if (client) {
+      setClient({...client, medicalInfo: editedMedical});
+      setIsEditingMedical(false);
+    }
+  };
+
+  const saveDiet = () => {
+    if (client) {
+      setClient({...client, dietInfo: editedDiet});
+      setIsEditingDiet(false);
+    }
+  };
+
+  const saveContact = () => {
+    if (client) {
+      setClient({...client, contactInfo: editedContact});
+      setIsEditingContact(false);
+    }
+  };
+
+  // Handle note modifications
+  const updateNote = (index: number, value: string) => {
+    const newNotes = [...editedNotes];
+    newNotes[index] = value;
+    setEditedNotes(newNotes);
+  };
+
+  const addNote = () => {
+    setEditedNotes([...editedNotes, '']);
+  };
+
+  const removeNote = (index: number) => {
+    const newNotes = [...editedNotes];
+    newNotes.splice(index, 1);
+    setEditedNotes(newNotes);
   };
 
   if (!client) {
@@ -321,65 +362,174 @@ const ClientAccountPage = ({ user, setUser, isAuthLoading }: ClientAccountPagePr
               </Col>
               
               <Col xs={24} md={12} lg={8}>
-                <Card title="Цели" className="dashboard-card">
-                  <Paragraph>{client.goals || "Не указаны"}</Paragraph>
+                <Card 
+                  title="Цели" 
+                  className="dashboard-card"
+                  extra={
+                    isEditingGoals ? (
+                      <Space className="card-controls">
+                        <Button 
+                          type="primary" 
+                          icon={<SaveOutlined />} 
+                          onClick={saveGoals}
+                        >
+                          Сохранить
+                        </Button>
+                        <Button 
+                          icon={<CloseOutlined />} 
+                          onClick={() => {
+                            setIsEditingGoals(false);
+                            setEditedGoals(client.goals || '');
+                          }}
+                        >
+                          Отмена
+                        </Button>
+                      </Space>
+                    ) : (
+                      <Button 
+                        type="text" 
+                        icon={<EditOutlined />} 
+                        onClick={() => setIsEditingGoals(true)}
+                        className="edit-button"
+                      />
+                    )
+                  }
+                >
+                  {isEditingGoals ? (
+                    <TextArea 
+                      value={editedGoals}
+                      onChange={e => setEditedGoals(e.target.value)}
+                      rows={4}
+                      placeholder="Укажите ваши цели тренировок"
+                    />
+                  ) : (
+                    <Paragraph>{client.goals || "Не указаны"}</Paragraph>
+                  )}
                 </Card>
               </Col>
             </Row>
             
             <Row gutter={[16, 16]} className="dashboard-row">
               <Col xs={24} md={12}>
-                <Card title="Мои тренеры" className="dashboard-card">
-                  <List
-                    dataSource={trainers}
-                    renderItem={trainer => (
-                      <List.Item
-                        actions={[
-                          <Button key="message" icon={<MessageOutlined />} 
-                            onClick={() => toggleChat(trainer)}>
-                            Написать
-                          </Button>,
-                          <Button key="details" icon={<InfoCircleOutlined />} 
-                            onClick={() => showTrainerDetails(trainer)}>
-                            Подробнее
-                          </Button>
-                        ]}
-                      >
-                        <List.Item.Meta
-                          avatar={
-                            <Avatar
-                              src={trainer.img}
-                              icon={!trainer.img && <UserOutlined />}
-                              size={48}
+                <Card 
+                  title="Мои тренеры" 
+                  className="dashboard-card trainers-dashboard-card"
+                >
+                  <div className="trainers-grid">
+                    {trainers.map(trainer => (
+                      <div key={trainer.id} className="trainer-card-mini">
+                        <div className="trainer-card-header">
+                          <Avatar
+                            src={trainer.img}
+                            icon={!trainer.img && <UserOutlined />}
+                            size={60}
+                          />
+                          <div className="trainer-card-info">
+                            <Text strong>{trainer.name}</Text>
+                            <Text type="secondary">{trainer.specialty.split(', ')[0]}</Text>
+                          </div>
+                        </div>
+                        <div className="trainer-card-actions">
+                          <Tooltip title="Написать">
+                            <Button 
+                              type="primary" 
+                              icon={<MessageOutlined />} 
+                              onClick={() => toggleChat(trainer)}
+                              shape="circle"
+                              size="small"
                             />
-                          }
-                          title={trainer.name}
-                          description={
-                            <>
-                              <div>{trainer.specialty}</div>
-                              <div>Опыт: {trainer.experience}</div>
-                            </>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  />
+                          </Tooltip>
+                          <Tooltip title="Подробнее">
+                            <Button 
+                              icon={<InfoCircleOutlined />} 
+                              onClick={() => showTrainerDetails(trainer)}
+                              shape="circle"
+                              size="small"
+                            />
+                          </Tooltip>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </Card>
               </Col>
               
               <Col xs={24} md={12}>
-                <Card title="Заметки" className="dashboard-card">
-                  {client.notes && client.notes.length > 0 ? (
-                    <List
-                      dataSource={client.notes}
-                      renderItem={note => (
-                        <List.Item>
-                          <Text>{note}</Text>
-                        </List.Item>
-                      )}
-                    />
+                <Card 
+                  title="Заметки" 
+                  className="dashboard-card"
+                  extra={
+                    isEditingNotes ? (
+                      <Space className="card-controls">
+                        <Button 
+                          type="primary" 
+                          icon={<SaveOutlined />} 
+                          onClick={saveNotes}
+                        >
+                          Сохранить
+                        </Button>
+                        <Button 
+                          icon={<CloseOutlined />} 
+                          onClick={() => {
+                            setIsEditingNotes(false);
+                            setEditedNotes(client.notes || []);
+                          }}
+                        >
+                          Отмена
+                        </Button>
+                      </Space>
+                    ) : (
+                      <Button 
+                        type="text" 
+                        icon={<EditOutlined />} 
+                        onClick={() => setIsEditingNotes(true)}
+                        className="edit-button"
+                      />
+                    )
+                  }
+                >
+                  {isEditingNotes ? (
+                    <div className="notes-editor">
+                      <Form layout="vertical">
+                        {editedNotes.map((note, index) => (
+                          <Form.Item key={index}>
+                            <Input
+                              value={note}
+                              onChange={(e) => updateNote(index, e.target.value)}
+                              addonAfter={
+                                <Button
+                                  type="text"
+                                  icon={<MinusCircleOutlined />}
+                                  onClick={() => removeNote(index)}
+                                  danger
+                                />
+                              }
+                            />
+                          </Form.Item>
+                        ))}
+                        <Button 
+                          type="dashed" 
+                          onClick={addNote} 
+                          block 
+                          icon={<PlusOutlined />}
+                        >
+                          Добавить заметку
+                        </Button>
+                      </Form>
+                    </div>
                   ) : (
-                    <Text>Нет заметок</Text>
+                    client.notes && client.notes.length > 0 ? (
+                      <List
+                        dataSource={client.notes}
+                        renderItem={note => (
+                          <List.Item>
+                            <Text>{note}</Text>
+                          </List.Item>
+                        )}
+                      />
+                    ) : (
+                      <Text>Нет заметок</Text>
+                    )
                   )}
                 </Card>
               </Col>
@@ -502,20 +652,143 @@ const ClientAccountPage = ({ user, setUser, isAuthLoading }: ClientAccountPagePr
           <TabPane tab={<span><FileTextOutlined /> Информация</span>} key="4">
             <Row gutter={[16, 16]}>
               <Col xs={24} md={12}>
-                <Card title="Медицинская информация" className="info-card">
-                  <Paragraph>{client.medicalInfo || "Не указана"}</Paragraph>
+                <Card 
+                  title="Медицинская информация" 
+                  className="info-card"
+                  extra={
+                    isEditingMedical ? (
+                      <Space className="card-controls">
+                        <Button 
+                          type="primary" 
+                          icon={<SaveOutlined />} 
+                          onClick={saveMedical}
+                        >
+                          Сохранить
+                        </Button>
+                        <Button 
+                          icon={<CloseOutlined />} 
+                          onClick={() => {
+                            setIsEditingMedical(false);
+                            setEditedMedical(client.medicalInfo || '');
+                          }}
+                        >
+                          Отмена
+                        </Button>
+                      </Space>
+                    ) : (
+                      <Button 
+                        type="text" 
+                        icon={<EditOutlined />} 
+                        onClick={() => setIsEditingMedical(true)}
+                        className="edit-button"
+                      />
+                    )
+                  }
+                >
+                  {isEditingMedical ? (
+                    <TextArea 
+                      value={editedMedical}
+                      onChange={e => setEditedMedical(e.target.value)}
+                      rows={4}
+                      placeholder="Укажите вашу медицинскую информацию"
+                    />
+                  ) : (
+                    <Paragraph>{client.medicalInfo || "Не указана"}</Paragraph>
+                  )}
                 </Card>
               </Col>
               <Col xs={24} md={12}>
-                <Card title="Диетические рекомендации" className="info-card">
-                  <Paragraph>{client.dietInfo || "Не указаны"}</Paragraph>
+                <Card 
+                  title="Диетические рекомендации" 
+                  className="info-card"
+                  extra={
+                    isEditingDiet ? (
+                      <Space className="card-controls">
+                        <Button 
+                          type="primary" 
+                          icon={<SaveOutlined />} 
+                          onClick={saveDiet}
+                        >
+                          Сохранить
+                        </Button>
+                        <Button 
+                          icon={<CloseOutlined />} 
+                          onClick={() => {
+                            setIsEditingDiet(false);
+                            setEditedDiet(client.dietInfo || '');
+                          }}
+                        >
+                          Отмена
+                        </Button>
+                      </Space>
+                    ) : (
+                      <Button 
+                        type="text" 
+                        icon={<EditOutlined />} 
+                        onClick={() => setIsEditingDiet(true)}
+                        className="edit-button"
+                      />
+                    )
+                  }
+                >
+                  {isEditingDiet ? (
+                    <TextArea 
+                      value={editedDiet}
+                      onChange={e => setEditedDiet(e.target.value)}
+                      rows={4}
+                      placeholder="Укажите диетические рекомендации"
+                    />
+                  ) : (
+                    <Paragraph>{client.dietInfo || "Не указаны"}</Paragraph>
+                  )}
                 </Card>
               </Col>
             </Row>
             <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
               <Col xs={24}>
-                <Card title="Контактная информация" className="info-card">
-                  <Paragraph>{client.contactInfo || "Не указана"}</Paragraph>
+                <Card 
+                  title="Контактная информация" 
+                  className="info-card"
+                  extra={
+                    isEditingContact ? (
+                      <Space className="card-controls">
+                        <Button 
+                          type="primary" 
+                          icon={<SaveOutlined />} 
+                          onClick={saveContact}
+                        >
+                          Сохранить
+                        </Button>
+                        <Button 
+                          icon={<CloseOutlined />} 
+                          onClick={() => {
+                            setIsEditingContact(false);
+                            setEditedContact(client.contactInfo || '');
+                          }}
+                        >
+                          Отмена
+                        </Button>
+                      </Space>
+                    ) : (
+                      <Button 
+                        type="text" 
+                        icon={<EditOutlined />} 
+                        onClick={() => setIsEditingContact(true)}
+                        className="edit-button"
+                      />
+                    )
+                  }
+                >
+                  {isEditingContact ? (
+                    <TextArea 
+                      value={editedContact}
+                      onChange={e => setEditedContact(e.target.value)}
+                      rows={3}
+                      placeholder="Укажите вашу контактную информацию"
+                    />
+                  ) : (
+                    <Paragraph>{client.contactInfo || "Не указана"}</Paragraph>
+                  )}
                 </Card>
               </Col>
             </Row>
@@ -571,12 +844,27 @@ const ClientAccountPage = ({ user, setUser, isAuthLoading }: ClientAccountPagePr
         </Tabs>
       </div>
       
-      {/* Чат с тренером */}
-      {isChatOpen && activeTrainer && (
-        <ClientAccountChat
-          trainerName={activeTrainer.name}
-          onClose={closeChat}
-        />
+      {/* Чат с тренерами (коллапсируемый) */}
+      {activeChats.length > 0 && (
+        isChatCollapsed ? (
+          <div className="chat-collapsed" onClick={expandChat}>
+            <Button 
+              type="primary" 
+              icon={<CommentOutlined />}
+              className="chat-expand-button"
+            >
+              Чаты ({activeChats.length})
+            </Button>
+          </div>
+        ) : (
+          <ClientAccountChat
+            onClose={collapseChat}
+            onCloseChat={() => closeChat(currentChatIndex)}
+            activeChats={activeChats}
+            currentChatIndex={currentChatIndex}
+            setCurrentChatIndex={setCurrentChatIndex}
+          />
+        )
       )}
 
       {/* Модальное окно с подробной информацией о тренере */}

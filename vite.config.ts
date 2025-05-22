@@ -8,6 +8,14 @@ const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 3000,
+    host: true
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true
+  },
   css: {
     preprocessorOptions: {
       scss: {

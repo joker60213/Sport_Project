@@ -1,0 +1,25 @@
+.client-chat-card {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  border-radius: 12px;
+  @media (max-width: 600px) {
+    right: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    bottom: 0 !important;
+    border-radius: 0;
+  }
+}
+
+.client-chat-messages {
+  background: #fafbfc;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 180px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-right: 4px;
+}
+
+.chat-toggle-button {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+} 

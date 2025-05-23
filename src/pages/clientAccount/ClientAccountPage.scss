@@ -1,0 +1,320 @@
+@import '@/styles/_variables.scss';
+
+.client-account {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: var(--color-bg);
+  min-height: 100vh;
+
+  .client-account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    
+    .client-profile {
+      display: flex;
+      align-items: center;
+      
+      .client-avatar {
+        margin-right: 16px;
+        background-color: var(--color-primary);
+      }
+      
+      .client-info {
+        h3 {
+          margin-bottom: 8px;
+        }
+        
+        .client-stats {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+      }
+    }
+    
+    .logout-button {
+      margin-left: 16px;
+    }
+  }
+
+  .client-account-content {
+    background: var(--color-card);
+    border-radius: $border-radius;
+    padding: 24px;
+    box-shadow: $box-shadow;
+    
+    .ant-tabs-nav {
+      margin-bottom: 24px;
+    }
+    
+    .dashboard-row {
+      margin-bottom: 24px;
+    }
+    
+    .dashboard-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      
+      .ant-progress {
+        margin-bottom: 16px;
+      }
+      
+      .card-help-text {
+        margin-top: 16px;
+        color: rgba(0, 0, 0, 0.45);
+      }
+      
+      // Двигаем кнопки
+      .edit-button {
+        margin-left: 16px;
+      }
+      
+      // Двигаем кнопки
+      .card-controls {
+        margin-left: 16px;
+        
+        .ant-btn {
+          margin: 0 4px;
+        }
+      }
+    }
+    
+    // Специальные стили для карточки тренеров
+    .trainers-dashboard-card {
+      padding: 16px;
+      
+      .trainers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+        width: 100%;
+        
+        .trainer-card-mini {
+          display: flex;
+          flex-direction: column;
+          border: 1px solid var(--color-border);
+          border-radius: 8px;
+          padding: 12px;
+          transition: all 0.3s;
+          
+          &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: var(--color-primary);
+          }
+          
+          .trainer-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            
+            .trainer-card-info {
+              margin-left: 12px;
+              display: flex;
+              flex-direction: column;
+            }
+          }
+          
+          .trainer-card-actions {
+            display: flex;
+            justify-content: space-around;
+            
+            .ant-btn {
+              margin: 0 4px;
+            }
+          }
+        }
+      }
+    }
+    
+    .notes-editor {
+      width: 100%;
+      text-align: left;
+      
+      .ant-form-item {
+        margin-bottom: 8px;
+      }
+    }
+  }
+  
+  // Двигаем кнопки
+  .ant-card-head {
+    .ant-card-head-title {
+      padding-right: 12px;
+    }
+    
+    .ant-card-extra {
+      padding-left: 12px;
+    }
+  }
+  
+  .workouts-card, .progress-card, .info-card, .trainers-card {
+    margin-bottom: 24px;
+  }
+  
+  .workout-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    
+    .workout-date {
+      font-weight: bold;
+      color: var(--color-primary);
+    }
+    
+    .workout-title {
+      font-size: 15px;
+    }
+  }
+  
+  .workout-notes {
+    margin-top: 16px;
+  }
+  
+  .trainer-card {
+    width: 100%;
+    margin-bottom: 16px;
+    
+    .ant-avatar {
+      display: block;
+      margin: 0 auto 16px;
+      
+      @media (min-width: 576px) {
+        margin: 0;
+      }
+    }
+  }
+  
+  .trainer-details {
+    .trainer-info-row {
+      .ant-avatar {
+        display: block;
+        margin: 0 auto 16px;
+        
+        @media (min-width: 576px) {
+          margin: 0;
+        }
+      }
+      
+      .ant-typography {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+// Стили для свернутого чата
+.chat-collapsed {
+  position: fixed;
+  right: 40px;
+  bottom: 24px;
+  z-index: 1000;
+  
+  .chat-expand-button {
+    border-radius: 24px;
+    padding: 0 16px;
+    height: 42px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    
+    .anticon {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+.client-account-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 18px;
+}
+
+/* Стили для чата */
+.client-account-chat-card {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  border-radius: 12px;
+  
+  @media (max-width: 600px) {
+    right: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    bottom: 0 !important;
+    border-radius: 0;
+  }
+}
+
+.client-account-chat-messages {
+  background: #fafbfc;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 180px;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .client-account {
+    padding: 20px 12px;
+    
+    .client-account-header {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      .logout-button {
+        margin-left: 0;
+        margin-top: 16px;
+      }
+    }
+    
+    .client-account-content {
+      padding: 16px;
+    }
+    
+    .trainers-dashboard-card {
+      .trainers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .client-account {
+    .client-account-header {
+      .client-profile {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        
+        .client-avatar {
+          margin-right: 0;
+          margin-bottom: 16px;
+        }
+        
+        .client-stats {
+          justify-content: center;
+        }
+      }
+    }
+  }
+} 

@@ -1,0 +1,434 @@
+@import '@/styles/_variables.scss';
+@import 'antd/dist/reset.css';
+
+html, body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: $bg-color;
+  color: $text-color;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding-right: 0 !important; /* Предотвращает изменение padding при появлении скролла */
+}
+
+/* Улучшенные стили для скроллбара, работающие во всех браузерах */
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05); /* Firefox */
+}
+
+/* Стили для WebKit-браузеров (Chrome, Safari, новые версии Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+:root {
+  --color-bg: #f9f9f9;
+  --color-text: #222;
+  --color-primary: #56ab2f;
+  --color-secondary: #f8b500;
+  --color-card: #fff;
+  --color-header: #fff;
+  --color-button-text: #fff;
+  --color-border: #e8e8e8;
+  --color-input-bg: #fff;
+  --color-input-border: #d9d9d9;
+  --color-input-text: #222;
+  --color-table-header: #fafafa;
+  --color-divider: #f0f0f0;
+  --color-modal-bg: #fff;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-hover: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='dark'] {
+  --color-bg: #18191a;
+  --color-text: #f1f1f1;
+  --color-primary: #52c41a;
+  --color-secondary: #bfa800;
+  --color-card: #23272f;
+  --color-header: #1f1f1f;
+  --color-button-text: #fff;
+  --color-border: #303030;
+  --color-input-bg: #2c2c2c;
+  --color-input-border: #434343;
+  --color-input-text: #f1f1f1;
+  --color-table-header: #1f1f1f;
+  --color-divider: #303030;
+  --color-modal-bg: #1f1f1f;
+  --color-shadow: rgba(0, 0, 0, 0.5);
+  --color-hover: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.card, .ant-card, .info-card {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+h1, h2, h3, h4, h5, .ant-typography {
+  color: var(--color-text) !important;
+}
+
+.ant-table {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--color-table-header) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--color-hover) !important;
+}
+
+.ant-btn {
+  border-color: var(--color-border) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Плавные переходы для текста в кнопках */
+.ant-btn span, .ant-btn div {
+  transition: color 0.2s ease !important;
+}
+
+/* Стили для hover обычных кнопок */
+.ant-btn:hover {
+  background-color: rgba(86, 171, 47, 0.08) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 2px 8px rgba(86, 171, 47, 0.2) !important;
+}
+
+.ant-btn:focus, 
+.ant-btn:active {
+  background-color: rgba(86, 171, 47, 0.12) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(86, 171, 47, 0.2) !important;
+}
+
+/* Исправление для текста в кнопках при наведении */
+.ant-btn:hover span,
+.ant-btn:focus span,
+.ant-btn:active span,
+.ant-btn:hover div,
+.ant-btn:focus div,
+.ant-btn:active div {
+  color: inherit;
+}
+
+.ant-btn-primary {
+  background: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Стили для hover primary кнопок */
+.ant-btn-primary:hover {
+  background-color: #63c438 !important;
+  border-color: #63c438 !important;
+  box-shadow: 0 2px 8px rgba(86, 171, 47, 0.4) !important;
+}
+
+.ant-btn-primary:focus,
+.ant-btn-primary:active {
+  background-color: #4a9428 !important;
+  border-color: #4a9428 !important;
+  box-shadow: 0 0 0 2px rgba(86, 171, 47, 0.3) !important;
+}
+
+.ant-btn-primary:hover span,
+.ant-btn-primary:focus span,
+.ant-btn-primary:active span,
+.ant-btn-primary:hover div,
+.ant-btn-primary:focus div,
+.ant-btn-primary:active div {
+  color: var(--color-button-text);
+}
+
+.ant-btn-default {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-modal-content, .ant-modal-header {
+  background: var(--color-modal-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-modal-title {
+  color: var(--color-text) !important;
+}
+
+.ant-form-item-label > label {
+  color: var(--color-text) !important;
+}
+
+.ant-input, .ant-input-number, .ant-select-selector, .ant-picker {
+  background: var(--color-input-bg) !important;
+  border-color: var(--color-input-border) !important;
+  color: var(--color-input-text) !important;
+}
+
+.ant-input-number-input, .ant-select-selection-item {
+  color: var(--color-input-text) !important;
+}
+
+.ant-tabs-tab {
+  color: var(--color-text) !important;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--color-primary) !important;
+}
+
+.ant-tabs-ink-bar {
+  background: var(--color-primary) !important;
+}
+
+.ant-divider {
+  border-color: var(--color-divider) !important;
+}
+
+.ant-divider-inner-text {
+  color: var(--color-text) !important;
+  background: var(--color-card) !important;
+}
+
+.ant-tag {
+  border: 1px solid var(--color-border) !important;
+}
+
+.ant-collapse {
+  background: var(--color-card) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-collapse-item, .ant-collapse-header {
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-collapse-content {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-select-dropdown {
+  background: var(--color-card) !important;
+}
+
+.ant-select-item {
+  color: var(--color-text) !important;
+}
+
+.ant-select-item-option-selected,
+.ant-select-item-option-active {
+  background: var(--color-hover) !important;
+}
+
+.ant-spin-dot-item {
+  background-color: var(--color-primary) !important;
+}
+
+header, .header {
+  background: var(--color-header) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+footer, .footer {
+  background: var(--color-header) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.client-chat-messages {
+  background: var(--color-card) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.empty-state {
+  background: var(--color-card) !important;
+}
+
+.anticon {
+  color: var(--color-text);
+}
+
+/* DatePicker и календарь */
+.ant-picker-dropdown, 
+.ant-calendar-picker-container {
+  background: var(--color-card) !important;
+}
+
+.ant-picker-panel, 
+.ant-calendar-panel {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-picker-cell, 
+.ant-calendar-date {
+  color: var(--color-text) !important;
+}
+
+.ant-picker-cell-in-view, 
+.ant-calendar-date {
+  color: var(--color-text) !important;
+}
+
+.ant-picker-header, 
+.ant-calendar-header {
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-picker-header button, 
+.ant-calendar-header button {
+  color: var(--color-text) !important;
+}
+
+/* Switch */
+.ant-switch {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.ant-switch-checked {
+  background-color: var(--color-primary) !important;
+}
+
+/* Checkbox и Radio */
+.ant-checkbox-wrapper, 
+.ant-radio-wrapper {
+  color: var(--color-text) !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-radio-checked .ant-radio-inner {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* Popover и Tooltip */
+.ant-popover-inner,
+.ant-tooltip-inner {
+  background-color: var(--color-card) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-popover-arrow-content,
+.ant-tooltip-arrow-content {
+  background-color: var(--color-card) !important;
+}
+
+/* Notification, Message и Alert */
+.ant-notification-notice,
+.ant-message-notice-content,
+.ant-alert {
+  background-color: var(--color-card) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-notification-notice-message,
+.ant-notification-notice-description,
+.ant-message-notice-content,
+.ant-alert-message,
+.ant-alert-description {
+  color: var(--color-text) !important;
+}
+
+/* Прогресс бар */
+.ant-progress-text {
+  color: var(--color-text) !important;
+}
+
+/* Steps */
+.ant-steps-item-title,
+.ant-steps-item-description {
+  color: var(--color-text) !important;
+}
+
+/* Drawer */
+.ant-drawer-wrapper-body,
+.ant-drawer-header,
+.ant-drawer-content {
+  background-color: var(--color-card) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-drawer-title {
+  color: var(--color-text) !important;
+}
+
+@media (max-width: 900px) {
+  .container, .client-details-content, .ant-card, .card, .info-card {
+    padding: 10px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    max-width: 100vw !important;
+  }
+  .client-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .client-chat-card {
+    width: 100vw !important;
+    right: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+}
+@media (max-width: 600px) {
+  html, body {
+    font-size: 15px;
+  }
+  .container, .client-details-content, .ant-card, .card, .info-card {
+    padding: 4px !important;
+  }
+  .ant-table {
+    font-size: 13px;
+  }
+}

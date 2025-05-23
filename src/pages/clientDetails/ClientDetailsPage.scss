@@ -1,0 +1,236 @@
+.client-details {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+
+  .client-details-header {
+    margin-bottom: 24px;
+    
+    .back-button {
+      margin-bottom: 16px;
+    }
+    
+    h2 {
+      margin-bottom: 8px;
+    }
+    
+    .client-basic-info {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+  }
+
+  .client-details-content {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100vw;
+    overflow-x: visible;
+  }
+
+  .action-bar {
+    margin-bottom: 16px;
+  }
+
+  .empty-state {
+    padding: 40px;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+
+  .chart-card {
+    margin-top: 16px;
+  }
+
+  .workouts-list {
+    .workout-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      
+      .workout-date {
+        font-weight: bold;
+        color: #52c41a;
+      }
+      
+      .workout-title {
+        font-size: 15px;
+      }
+    }
+    
+    .workout-notes {
+      margin-top: 16px;
+    }
+  }
+
+  .notes-container {
+    .add-note-card {
+      margin-bottom: 16px;
+    }
+    
+    .notes-list {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 16px;
+    }
+  }
+
+  .charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    font-size: 18px;
+  }
+
+  /* Стили для иконок действий - сохраняем анимацию */
+  .action-icon {
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    
+    &:hover {
+      color: var(--color-primary) !important;
+      background-color: rgba(82, 196, 26, 0.1);
+    }
+  }
+  
+  .delete-icon {
+    &:hover {
+      color: #ff4d4f !important;
+      background-color: rgba(255, 77, 79, 0.1);
+    }
+  }
+
+  /* Fix для кнопок в деталях клиента - без мерцания */
+  button.ant-btn {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    
+    span, div {
+      transition: color 0.2s ease;
+      color: inherit;
+    }
+    
+    &:hover {
+      background-color: rgba(86, 171, 47, 0.08) !important;
+      border-color: var(--color-primary) !important;
+      box-shadow: 0 2px 8px rgba(86, 171, 47, 0.2);
+      
+      span, div {
+        color: inherit;
+      }
+    }
+    
+    &:focus, &:active {
+      background-color: rgba(86, 171, 47, 0.12) !important;
+      border-color: var(--color-primary) !important;
+      box-shadow: 0 0 0 2px rgba(86, 171, 47, 0.2);
+      
+      span, div {
+        color: inherit;
+      }
+    }
+  }
+
+  button.ant-btn-primary {
+    span, div {
+      transition: color 0.2s ease;
+      color: var(--color-button-text);
+    }
+    
+    &:hover {
+      background-color: #63c438 !important;
+      border-color: #63c438 !important;
+      box-shadow: 0 2px 8px rgba(86, 171, 47, 0.4);
+      
+      span, div {
+        color: var(--color-button-text);
+      }
+    }
+    
+    &:focus, &:active {
+      background-color: #4a9428 !important;
+      border-color: #4a9428 !important;
+      box-shadow: 0 0 0 2px rgba(86, 171, 47, 0.3);
+      
+      span, div {
+        color: var(--color-button-text);
+      }
+    }
+  }
+
+  /* Стили для таблицы замеров */
+  .measurements-table {
+    width: 100%;
+    overflow-x: auto;
+    
+    .ant-table {
+      width: 100%;
+      
+      .ant-table-cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 8px 10px;
+      }
+      
+      .ant-table-thead th {
+        background-color: var(--color-table-header);
+        font-weight: 600;
+      }
+    }
+    
+    .actions-column {
+      text-align: right;
+    }
+    
+    /* Фиксированные колонки */
+    .ant-table-cell-fix-left,
+    .ant-table-cell-fix-right {
+      background: var(--color-card);
+      z-index: 2;
+    }
+  }
+
+  /* Улучшенные стили для скролла таблицы */
+  .ant-table-body {
+    &::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .client-details {
+    padding: 20px 12px;
+    
+    .client-details-content {
+      padding: 16px;
+    }
+  }
+}
+
+/* Переопределяем глобальный стиль таблицы */
+.ant-table {
+  min-width: auto;
+} 

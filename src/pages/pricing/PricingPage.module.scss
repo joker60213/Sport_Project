@@ -1,0 +1,95 @@
+@import '@/styles/_variables.scss';
+
+.wrapper {
+  padding: 80px 20px;
+  background: $bg-color;
+}
+
+.container {
+  text-align: center;
+
+  h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  > p {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+.cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  padding: 32px 24px;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  max-width: 280px;
+  width: 100%;
+  transition: 0.3s ease;
+  text-align: center;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .price {
+    font-size: 24px;
+    font-weight: bold;
+    color: $primary-color;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+  }
+}
+
+.popular {
+  border: 2px solid $primary-color;
+}
+
+@media (max-width: 768px) {
+  .container h2 {
+    font-size: 24px;
+  }
+
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.header {
+    margin-bottom: 48px;
+    text-align: center;
+  
+    h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+  
+    p {
+      font-size: 18px;
+      color: #666;
+      margin: 0;
+    }
+  }
+  
